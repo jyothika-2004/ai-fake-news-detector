@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Fake News Detector</title>
+    <meta name="description" content="AI-powered tool to detect fake news articles.">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-elements">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+    
+    <main class="container">
+        <header>
+            <h1><span class="gradient-text">Veritas</span> AI</h1>
+            <p class="subtitle">Advanced Fake News Detection Engine</p>
+        </header>
+
+        <section class="detector-section">
+            <form id="detector-form">
+                <div class="input-group">
+                    <label for="news-input">Paste the news article below:</label>
+                    <textarea id="news-input" rows="8" placeholder="Enter article text here..." required></textarea>
+                </div>
+                <button type="submit" id="analyze-btn">
+                    <span class="btn-text">Analyze Article</span>
+                    <div class="loader hidden" id="btn-loader"></div>
+                </button>
+            </form>
+        </section>
+
+        <section id="results-section" class="hidden glass-panel">
+            <h2>Analysis Result</h2>
+            <div class="result-card">
+                <div class="prediction-ring">
+                    <svg viewBox="0 0 36 36" class="circular-chart">
+                        <path class="circle-bg"
+                            d="M18 2.0845
+                            a 15.9155 15.9155 0 0 1 0 31.831
+                            a 15.9155 15.9155 0 0 1 0 -31.831"
+                        />
+                        <path class="circle" id="confidence-circle"
+                            stroke-dasharray="0, 100"
+                            d="M18 2.0845
+                            a 15.9155 15.9155 0 0 1 0 31.831
+                            a 15.9155 15.9155 0 0 1 0 -31.831"
+                        />
+                        <text x="18" y="20.35" class="percentage" id="confidence-text">0%</text>
+                    </svg>
+                </div>
+                <div class="prediction-details">
+                    <h3 id="prediction-label">Unknown</h3>
+                    <p id="prediction-desc">Waiting for analysis...</p>
+                </div>
+            </div>
+            <div class="features-breakdown">
+                <h4>Key Indicators</h4>
+                <ul id="indicators-list">
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
