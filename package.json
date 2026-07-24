@@ -4,7 +4,7 @@
   "description": "Flask backend wrapped in a Node environment for Render",
   "scripts": {
     "postinstall": "python3 -m venv venv && ./venv/bin/pip install -r requirements.txt",
-    "start": "./venv/bin/gunicorn app:app"
+    "start": "./venv/bin/gunicorn -b 0.0.0.0:$PORT app:app"
   },
   "dependencies": {}
 }
