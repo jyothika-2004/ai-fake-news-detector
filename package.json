@@ -1,0 +1,10 @@
+{
+  "name": "ai-fake-news-detector",
+  "version": "1.0.0",
+  "description": "Flask backend wrapped in a Node environment for Render",
+  "scripts": {
+    "postinstall": "pip install -r requirements.txt",
+    "start": "gunicorn app:app"
+  },
+  "dependencies": {}
+}
