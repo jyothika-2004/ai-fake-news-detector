@@ -1,18 +1,15 @@
 import pandas as pd
-import requests
-import zipfile
-import io
 
-url = "https://github.com/GeorgeMcIntire/fake_real_news_dataset/raw/master/fake_or_real_news.csv.zip"
-print(f"Downloading dataset from {url}...")
-
-response = requests.get(url)
-if response.status_code == 200:
-    with zipfile.ZipFile(io.BytesIO(response.content)) as z:
-        csv_filename = z.namelist()[0]
-        with z.open(csv_filename) as f:
-            df = pd.read_csv(f)
-            df.to_csv('train.csv', index=False)
-            print(f"Dataset downloaded and extracted successfully! Shape: {df.shape}")
-else:
-    print(f"Failed to download: HTTP {response.status_code}")
+try:
+    from datasets import load_dataset
+    print("Downloading fake news dataset from HuggingFace...")
+    ds = load_dataset("GonzaloA/fake_news")
+    df = ds['train'].to_pandas()
+    
+    # The GonzaloA dataset has 'text' and 'label' columns
+    df.to_csv('train.csv', index=False)
+    print(f"Successfully saved train.csv! Shape: {df.shape}")
+except ImportError:
+    print("Error: 'datasets' library is not installed. Please run 'pip install datasets'.")
+except Exception as e:
+    print(f"Error downloading dataset: {e}")
