@@ -24,10 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
         analyzeBtn.disabled = true;
         resultsSection.classList.add('hidden');
 
-        // Simulate API call to the backend model
-        // In a real deployment, this would be a fetch() call to a Flask/FastAPI backend
+        // Call the Flask backend API
         try {
-            const result = await mockPredict(text);
+            const result = await predictAPI(text);
             displayResults(result);
         } catch (error) {
             console.error("Analysis failed", error);
@@ -77,32 +76,19 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
-    // Mock Backend Prediction
-    function mockPredict(text) {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                const textLength = text.length;
-                // Simple deterministic mock based on text length for demo purposes
-                const isFake = textLength % 2 !== 0; 
-                
-                // Base confidence 60 + random 0-39
-                const confidence = 60 + Math.floor(Math.random() * 39);
-                
-                resolve({
-                    prediction: isFake ? 'Fake News' : 'Real News',
-                    confidence: confidence,
-                    indicators: isFake ? [
-                        "High usage of sensationalist language detected.",
-                        "Lack of credible sources or verifiable facts.",
-                        "Structural anomalies typical of generated text."
-                    ] : [
-                        "Language structure is consistent with factual reporting.",
-                        "Neutral tone detected.",
-                        "Absence of common deception markers."
-                    ]
-                });
-            }, 1500); // 1.5s simulated network delay
+    // Real Backend Prediction
+    async function predictAPI(text) {
+        const response = await fetch('/predict', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: text })
         });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return await response.json();
     }
 
     // Number animation helper

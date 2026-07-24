@@ -9,6 +9,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+import joblib
 
 def main():
     print("--- Week 1: Data Loading & Cleaning ---")
@@ -48,6 +49,9 @@ def main():
     # Using max_features=5000 to limit dimensionality and speed up training
     vectorizer = TfidfVectorizer(max_features=5000, stop_words='english') 
     X_vec = vectorizer.fit_transform(X)
+    
+    print("Saving vectorizer...")
+    joblib.dump(vectorizer, 'vectorizer.pkl')
 
     # Split dataset
     X_train, X_test, y_train, y_test = train_test_split(X_vec, y, test_size=0.2, random_state=42)
@@ -55,10 +59,7 @@ def main():
 
     print("\n--- Week 3 & 4: Model Building and Evaluation ---")
     models = {
-        "KNN": KNeighborsClassifier(n_neighbors=5),
-        "LogReg": LogisticRegression(max_iter=1000),
-        "RandomForest": RandomForestClassifier(n_estimators=100, random_state=42),
-        "NeuralNet": MLPClassifier(hidden_layer_sizes=(100,), max_iter=300, random_state=42)
+        "LogReg": LogisticRegression(max_iter=1000)
     }
 
     results = {}
@@ -66,6 +67,11 @@ def main():
     for name, model in models.items():
         print(f"\nTraining {name}...")
         model.fit(X_train, y_train)
+        
+        if name == 'LogReg':
+            print("Saving LogReg model...")
+            joblib.dump(model, 'model.pkl')
+            
         preds = model.predict(X_test)
         
         acc = accuracy_score(y_test, preds)
